@@ -357,6 +357,8 @@ def build_docx():
         "  Stores pre-calibrated flood basin topologies (Kerala Ernakulam/Periyar & Assam Guwahati/Brahmaputra), NetworkX road graph structures G=(V,E), relief shelter specifications, and historical multi-variate telemetry sequences."
     )
 
+    add_figure(doc, "data_flow_architecture.png", "Figure 2: End-to-End Bidirectional Data Flow and State Synchronization Architecture")
+
     # ---------------- 3. ALGORITHMIC FORMULATIONS ----------------
     add_styled_heading(doc, "3. Algorithmic Formulations & Mathematical Pillars", level=1)
 
@@ -365,6 +367,8 @@ def build_docx():
         "Implemented in backend/app/core/sequential_miner.py. The sequential engine ingests multivariate hydro-meteorological sequences sampled at discrete intervals Delta t = 6 hours: "
         "X_t = [Rainfall R_t (mm), Upstream Dam Discharge Q_t (cumecs), Gauge Water Height H_t (meters), Soil Saturation Fraction S_t in [0.0, 1.0]]."
     )
+
+    add_figure(doc, "sequential_mining_pipeline.png", "Figure 3: Sequential Data Mining Engine — Sliding Window Extraction and Multi-Horizon Predictive Flow")
 
     doc.add_paragraph(
         "1. Sliding-Window Precipitation Windows:\n"
@@ -389,6 +393,8 @@ def build_docx():
         "Implemented in backend/app/core/spatial_miner.py. Converts raw citizen calls and telemetry alerts into verified spatial danger geometries."
     )
 
+    add_figure(doc, "spatial_mining_pipeline.png", "Figure 4: Spatial Data Mining Engine — ST-DBSCAN Clustering, Convex Hulls, and Moran's I Autocorrelation")
+
     doc.add_paragraph(
         "1. Spatio-Temporal DBSCAN with Haversine Geographic Distance Metric:\n"
         "   Because Euclidean distance incurs severe spherical distortion over geographical latitude/longitude coordinates, RescuePath AI computes distances using the Haversine formula:\n"
@@ -409,7 +415,8 @@ def build_docx():
         "Implemented in backend/app/core/graph_router.py. Solves the life-threatening flaws of standard routing engines during flood crises."
     )
 
-    add_figure(doc, "routing_flow_diagram.png", "Figure 2: Evacuation Routing Workflow and Dual Pathfinding Comparison")
+    add_figure(doc, "graph_routing_pipeline.png", "Figure 5: Spatial Graph Evacuation Routing Implementation — Dynamic Edge Cost, Severance, and Pareto A*")
+    add_figure(doc, "routing_flow_diagram.png", "Figure 6: Evacuation Routing Decision Logic and Dual-Pathfinding Comparison")
 
     doc.add_paragraph(
         "1. Dynamic Multi-Weighted Road Network Graph G = (V, E):\n"
@@ -436,7 +443,7 @@ def build_docx():
     # 4.1 Evacuation Routing
     add_styled_heading(doc, "4.1 Dynamic Evacuation Routing & Dual-Corridor Comparison", level=2)
     doc.add_paragraph(
-        "Figure 3 demonstrates the core spatial graph routing engine in the Kerala Ernakulam (Aluva) basin. "
+        "Figure 7 demonstrates the core spatial graph routing engine in the Kerala Ernakulam (Aluva) basin. "
         "The evacuee origin is positioned at Aluva Manappuram (low-lying riverbank basin). "
         "The map visually contrasts two paths calculated concurrently:"
     )
@@ -444,55 +451,55 @@ def build_docx():
         "• Red Path (Standard Shortest Dijkstra): Takes the direct 3.85 km route through the Periyar Riverbank Submerged Causeway (Hazard: 0.95), directing evacuees straight into floodwaters.\n"
         "• Green Path (RescuePath AI Safe Corridor A*): Dynamically diverts through the elevated Manappuram Ramp, Kuttamassery Road, and Choornikkara Safe Ridge, achieving an 84.7% reduction in cumulative risk exposure with zero submerged road crossings."
     )
-    add_figure(doc, "demo_01_evacuation_routing.png", "Figure 3: Live Command Dashboard — Dual Evacuation Routing Comparison (Kerala Basin)")
+    add_figure(doc, "demo_01_evacuation_routing.png", "Figure 7: Live Command Dashboard — Dual Evacuation Routing Comparison (Kerala Basin)")
 
     # 4.2 Sequential Timeline
     add_styled_heading(doc, "4.2 Sequential Multi-Step Horizon Flood Forecasting", level=2)
     doc.add_paragraph(
-        "Figure 4 showcases the Sequential Timeline operations panel. The sliding-window feature extractor reports 12h, 24h, and 72h cumulative precipitation, "
+        "Figure 8 showcases the Sequential Timeline operations panel. The sliding-window feature extractor reports 12h, 24h, and 72h cumulative precipitation, "
         "the temporal rate of rise (+0.18 m/hr), and the non-linear soil runoff coupling index (212.4). "
         "The multi-step horizon forecaster displays predictive flood probability curves for +24 Hours (42% / 4.85m), +48 Hours (78% / 5.90m), "
         "and +72 Hours (91% / 6.45m), triggering an active 'ESCALATING FLOOD CREST WARNING' banner."
     )
-    add_figure(doc, "demo_02_sequential_timeline.png", "Figure 4: Sequential Timeline Panel — Multi-Step Predictive Horizon Curves and Hydrologic Features")
+    add_figure(doc, "demo_02_sequential_timeline.png", "Figure 8: Sequential Timeline Panel — Multi-Step Predictive Horizon Curves and Hydrologic Features")
 
     # 4.3 Spatial Clusters & Moran's I
     add_styled_heading(doc, "4.3 Spatio-Temporal DBSCAN Clustering & Global Moran's I Validation", level=2)
     doc.add_paragraph(
-        "Figure 5 displays the Spatial Clusters and Autocorrelation panel. Emergency dispatchers can interactively adjust the ST-DBSCAN neighborhood radius "
+        "Figure 9 displays the Spatial Clusters and Autocorrelation panel. Emergency dispatchers can interactively adjust the ST-DBSCAN neighborhood radius "
         "epsilon (from 1.0 to 3.0 km) and MinPts (from 2 to 6). The engine recalculates cluster centroids and SciPy Convex Hull danger polygons in real time. "
         "The Global Moran's I statistical card displays an autocorrelation coefficient of I = +0.642, with a z-score of +4.18 and p-value = 0.00003, "
         "mathematically confirming non-random, statistically significant spatial clustering of flood severity."
     )
-    add_figure(doc, "demo_03_spatial_clusters.png", "Figure 5: Spatial Clustering Panel — Interactive ST-DBSCAN Tuning and Global Moran's I Hypothesis Test")
+    add_figure(doc, "demo_03_spatial_clusters.png", "Figure 9: Spatial Clustering Panel — Interactive ST-DBSCAN Tuning and Global Moran's I Hypothesis Test")
 
     # 4.4 Shelter Directory
     add_styled_heading(doc, "4.4 Pareto-Optimal Relief Shelter Directory & Logistics Management", level=2)
     doc.add_paragraph(
-        "Figure 6 shows the High-Ground Shelter Directory. Relief camps (e.g., UC College High Ground, Kalamassery Community Operations, Rajagiri Disaster Response Camp, "
+        "Figure 10 shows the High-Ground Shelter Directory. Relief camps (e.g., UC College High Ground, Kalamassery Community Operations, Rajagiri Disaster Response Camp, "
         "and Angamaly Evacuation Hub) are continuously monitored for total capacity, real-time occupancy, available beds, on-site medical staff presence, emergency generators, and contact hotlines. "
         "The Pareto allocation engine automatically prioritizes camps situated well above historical flood lines (elevation > 25m)."
     )
-    add_figure(doc, "demo_04_shelter_directory.png", "Figure 6: High-Ground Shelter Directory — Real-Time Capacity, Occupancy, Elevation, and Medical Staffing")
+    add_figure(doc, "demo_04_shelter_directory.png", "Figure 10: High-Ground Shelter Directory — Real-Time Capacity, Occupancy, Elevation, and Medical Staffing")
 
     # 4.5 Surge Simulator
     add_styled_heading(doc, "4.5 Real-Time Disaster Surge Simulator & Road Severance", level=2)
     doc.add_paragraph(
-        "Figure 7 demonstrates the Crisis Simulation module. By escalating the crisis multiplier from 1.0x to 2.2x, the simulator models an emergency dam spillway release. "
+        "Figure 11 demonstrates the Crisis Simulation module. By escalating the crisis multiplier from 1.0x to 2.2x, the simulator models an emergency dam spillway release. "
         "River levels breach danger marks, edge hazard factors spike past the 0.75 threshold, and the A* routing engine dynamically recomputes safe detours in real time. "
         "An Emergency Reset button allows immediate restoration to nominal conditions."
     )
-    add_figure(doc, "demo_05_surge_simulation.png", "Figure 7: Crisis Simulation Module — Dynamic River Gauge Surge and Automatic Road Severance")
+    add_figure(doc, "demo_05_surge_simulation.png", "Figure 11: Crisis Simulation Module — Dynamic River Gauge Surge and Automatic Road Severance")
 
     # 4.6 Assam Basin
     add_styled_heading(doc, "4.6 Cross-Basin Model Generalization: Assam Brahmaputra Basin", level=2)
     doc.add_paragraph(
-        "Figure 8 proves the geographic transferability of RescuePath AI. Switching the basin selector to 'Assam - Guwahati (Brahmaputra River Basin)' "
+        "Figure 12 proves the geographic transferability of RescuePath AI. Switching the basin selector to 'Assam - Guwahati (Brahmaputra River Basin)' "
         "reconfigures the topological graph to Guwahati's road network (MG Road riverbank, GS Road high corridor, Dispur capital ridge, and Jalukbari viaduct). "
         "The A* engine identifies low-lying riverside inundation along MG Road and successfully routes evacuees via the elevated Panbazar Overbridge and GS Road expressway, "
         "achieving a 46.4% hazard reduction."
     )
-    add_figure(doc, "demo_06_assam_guwahati.png", "Figure 8: Cross-Basin Generalization — Dynamic Evacuation Routing along the Brahmaputra Basin, Guwahati, Assam")
+    add_figure(doc, "demo_06_assam_guwahati.png", "Figure 12: Cross-Basin Generalization — Dynamic Evacuation Routing along the Brahmaputra Basin, Guwahati, Assam")
 
     # ---------------- 5. EXPERIMENTAL EVALUATION ----------------
     add_styled_heading(doc, "5. Experimental Evaluation & Quantitative Benchmarks", level=1)
