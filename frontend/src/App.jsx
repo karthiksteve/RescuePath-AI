@@ -58,10 +58,19 @@ export default function App() {
       .catch(err => console.error('Error fetching regions:', err));
   }, []);
 
+  const REGION_DEFAULT_STARTS = {
+    kerala_ernakulam: { lat: 10.1085, lng: 76.3535 },
+    assam_guwahati: { lat: 26.1850, lng: 91.7450 }
+  };
+
   // Fetch all regional data
   const loadAllData = async (currentRegion = regionId) => {
     setLoading(true);
     try {
+      const activeStart = REGION_DEFAULT_STARTS[currentRegion] || { lat: 10.1085, lng: 76.3535 };
+      setStartLocation(activeStart);
+      setSelectedShelterId(null);
+
       const [seq, spat, roads, river, camps, sim] = await Promise.all([
         apiService.getSequentialPrediction(currentRegion),
         apiService.getSpatialClusters(currentRegion, epsKm, minSamples),
@@ -78,12 +87,12 @@ export default function App() {
       setShelters(camps);
       setSimulationStatus(sim);
 
-      // Automatically compute initial evacuation route from default start location
+      // Automatically compute initial evacuation route from active start location
       const routeRes = await apiService.calculateEvacuationRoute(
         currentRegion,
-        startLocation.lat,
-        startLocation.lng,
-        selectedShelterId
+        activeStart.lat,
+        activeStart.lng,
+        null
       );
       setRouteData(routeRes);
     } catch (err) {
